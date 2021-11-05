@@ -24,6 +24,7 @@ public class CrudOprationTest {
 		System.out.println("3 . Update Product");
 		System.out.println("4 . Delete Product");
 		System.out.println("5 . Get One Product");
+		System.out.println("6 . Get All & Total Products count");
 		int option = input.nextInt();
 		switch (option) {
 		case 1:
@@ -40,6 +41,9 @@ public class CrudOprationTest {
 			break;
 		case 5:
 			getOneProduct(productDAO);
+			break;
+		case 6:
+			productDAO.getProductsAndCount();
 			break;
 		default:
 			System.out.println("Please select correct option");

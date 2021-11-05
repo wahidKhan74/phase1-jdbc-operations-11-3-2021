@@ -1,5 +1,6 @@
 package com.simplilearn.jdbcapp.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,7 +45,7 @@ public class ProductDAO {
 			System.out.println("Insertion operation failed !");
 		}
 	}
-	
+
 	// update product
 	public void updateProduct(String name, double price, int id) {
 		try {
@@ -66,7 +67,7 @@ public class ProductDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// get one product
 	public void getProduct(int id) {
 		try {
@@ -80,13 +81,13 @@ public class ProductDAO {
 			// execute query
 			ResultSet rst = pstm.executeQuery();
 			displayRecords(rst);
-			
+
 		} catch (SQLException e) {
 			System.out.println("Read operation failed !");
 			e.printStackTrace();
 		}
 	}
-	
+
 	// delete product
 	public void deleteProduct(int id) {
 		try {
@@ -103,6 +104,30 @@ public class ProductDAO {
 		} catch (SQLException e) {
 			System.out.println("Delete operation failed !");
 			e.printStackTrace();
+		}
+	}
+
+	// get all product and count
+	public void getProductsAndCount() {
+		try {
+			conn = DatabaseConnection.initConnection();
+			// create a callable stm
+			CallableStatement cstm = conn.prepareCall("{ call get_all_products_and_count() }");
+			
+			ResultSet rst1 = cstm.executeQuery();
+			displayRecords(rst1);
+			
+			cstm.getMoreResults();
+			ResultSet rst2 = cstm.getResultSet();
+			while(rst2.next()) {
+				System.out.println("--------------");
+				System.out.println("The Total Products :: "+rst2.getInt("total_product"));
+				System.out.println("--------------");
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Get stored procedure operation failed !");
+			// e.printStackTrace();
 		}
 	}
 
